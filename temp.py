@@ -4,6 +4,8 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import scipy.optimize as opt
+
 def load_data():
     pathx = 'D:\ml\logistic_regression\ex4x.txt'
     pathy = 'D:\ml\logistic_regression\ex4y.txt'
@@ -17,7 +19,7 @@ def sigmoid(x):
 
 def cost_function(theta,X,Y):
     m = X.shape[0]
-    theta = np.reshape(theta,(len(theta),1))
+    
     J = (1/m)*(-Y.dot(np.log(sigmoid(X.dot(theta))))
                -(np.ones_like(Y)-Y).dot(np.log(np.ones_like(sigmoid(X.dot(theta)))-sigmoid(X.dot(theta)))))
     #grad = (1/m)*X.T.dot((sigmoid(X.dot(theta))-Y))
@@ -28,6 +30,13 @@ def compute_grad(theta,X,Y):
     grad = (1 / m) * X.T.dot((sigmoid(X.dot(theta)) - Y))
     return grad
 
+X,y = load_data()
+theta = np.array([0,0,0])
+theta = np.reshape(theta,(len(theta),1))
+result = opt.fmin_tnc(func=cost_function, x0=theta, fprime=compute_grad, args=(X, y))
+print (cost_function(result[0], X, y))
+
+print (result)
 
     # theta.shape =(3,1)
     # grad = np.zeros(3)
