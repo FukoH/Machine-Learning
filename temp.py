@@ -7,8 +7,8 @@ import numpy as np
 #import scipy.optimize as opt
 
 def load_data():
-    pathx = 'D:\ml\logistic_regression\ex4x.txt'
-    pathy = 'D:\ml\logistic_regression\ex4y.txt'
+    pathx = r'C:\Users\fuko\PycharmProjects\exercise\ex4x.txt'
+    pathy = r'C:\Users\fuko\PycharmProjects\exercise\ex4y.txt'
     X = np.genfromtxt(pathx)
     Y = np.genfromtxt(pathy)
     Y = Y.reshape((len(Y)),1)
@@ -20,8 +20,11 @@ def sigmoid(x):
 
 def cost_function(theta,X,Y):
     m = X.shape[0]
-    
-    J = (1/m)*((-Y.T.dot(np.log(sigmoid(X.dot(theta))))-(1-Y).T.dot(np.log(1 - sigmoid(X.dot(theta))))))
+    poly1 = -Y.T.dot(np.log(sigmoid(X.dot(theta))))
+    poly2 = (1-Y).T.dot(np.log(1 - sigmoid(X.dot(theta))))
+    Q = (poly1 - poly2)
+    J = (1/m)*Q[0][0]
+    #J = (1/m)*((-Y.T.dot(np.log(sigmoid(X.dot(theta))))-(1-Y).T.dot(np.log(1 - sigmoid(X.dot(theta))))))
     #grad = (1/m)*X.T.dot((sigmoid(X.dot(theta))-Y))
     return J
 
@@ -38,7 +41,7 @@ def BGD(alpha,theta,X,Y,iter_nums):
 
 def batch_gradient_descent(alpha, theta, x, y,num_iters):
 #    x_trans = np.transpose(x)
-#    m = len(y)
+#    m = len(y)A
     J_history = np.zeros(num_iters)
     for i in range(num_iters):
 #        hyposis = x.dot(theta)
@@ -54,8 +57,8 @@ def test():
     x, y = load_data()
 #    x = np.column_stack((x,np.ones_like(y)))
     y = np.array(y).reshape((len(y),1))
-    iteration = 1500
-    alpha = 0.01
+    iteration = 2000
+    alpha = 0.1
     theta = np.zeros((3,1))
     theta,J_history = batch_gradient_descent(alpha,theta,x,y,iteration)
 #    drwa_J(theta0_value,theta1_value,J_history)
